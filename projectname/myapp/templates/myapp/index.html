@@ -1,0 +1,39 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Головна сторінка
+{% endblock %}
+
+{% block content %}
+<div class="features">
+    <div class="search-container">
+        <form action="{% url 'search' %}" method="get">
+            <input type="search" class="search" name="q" placeholder="Пошук...">
+            <button type="submit" class="search-button"><i class="fa-solid fa-magnifying-glass"></i> Пошук</button>
+        </form>
+    </div>
+        <div class="card-container">
+            {% if prod %}
+                {% for el in prod %}
+                    <div class="card">
+                        <div class="card-img">
+                        <img src="{{ el.image.url }}" alt="{{ el.title }}">
+                        </div>
+                            <div class="card-content">
+                                <div class="card-title">{{ el.title }}</div>
+                                <div class="card-description">{{ el.description }}</div>
+                                <div class="card-price">{{ el.price }} грн</div>
+                                <a href="#" class="btn-buy">Купити</a>
+                            </div>
+
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p>No results found.</p>
+            {% endif %}
+        </div>
+</div>
+
+
+{% endblock %}

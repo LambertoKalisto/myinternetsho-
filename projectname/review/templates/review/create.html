@@ -1,0 +1,21 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Додати відгук
+{% endblock %}
+
+{% block content %}
+     <div class="features">
+        <h1>Додати відгук</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.name }}<br>
+            {{ form.full_text }}<br>
+            {{ form.rate }}<br>
+            {{ form.date }}<br>
+            <span>{{ error }}</span>
+            <button class="btn btn-success" type="submit">Додати відгук</button>
+        </form>
+    </div>
+{% endblock %}

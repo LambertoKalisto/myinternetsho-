@@ -1,0 +1,24 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Відгуки
+{% endblock %}
+
+{% block content %}
+     <div class="features">
+        <h1>Відгуки</h1>
+         <h3 class="rate-avg">Середня оцінка: {{ avg }} <span class="star">&#9733</span></h3>
+        {% if reviews %}
+            {% for el in reviews %}
+                <div class="main-review">
+                    <h3 class="h3-review">{{ el.name }}</h3>
+                    <p>{{ el.full_text }}</p>
+                    <p class="star">{{ el.rate }} &#9733</p>
+                </div>
+            {% endfor %}
+        {% else %}
+        <p>Відгуків немає!</p>
+        {% endif %}
+    </div>
+{% endblock %}

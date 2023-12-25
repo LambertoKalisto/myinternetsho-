@@ -1,0 +1,38 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Про нас
+{% endblock %}
+
+{% block content %}
+     <div class="features">
+        <h1>Про нас</h1>
+         <div class="map"><img src="{% static 'myapp/img/map.png' %}" alt="Карта"></div>
+         <ul class="about-ul">
+             <p>Графік праці</p>
+             <li>ПН: 9:00 – 20:00</li>
+             <li>ВТ: 9:00 – 20:00</li>
+             <li>СР: 9:00 – 20:00</li>
+             <li>ЧТ: 9:00 – 20:00</li>
+             <li>ПТ: 9:00 – 20:00</li>
+             <li>СБ: 10:00 – 19:00</li>
+             <li>НД: 10:00 – 18:00</li>
+         </ul>
+         <ul class="about-ul2">
+             <p>Зв'язок з нами</p>
+             <li>067 365 11 50</li>
+         </ul>
+         <ul class="about-ul3">
+             <p>Адресса</p>
+             <li>Соборна вулиця, 34/32</li>
+             <li>Кременчук</li>
+             <li>Полтавська область</li>
+             <li>Україна</li>
+             <li>39600</li>
+         </ul>
+
+
+
+    </div>
+{% endblock %}
