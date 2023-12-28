@@ -24,7 +24,7 @@
                                 <div class="card-title">{{ el.title }}</div>
                                 <div class="card-description">{{ el.description }}</div>
                                 <div class="card-price">{{ el.price }} грн</div>
-                                <a href="#" class="btn-buy">Купити</a>
+                                <a href="{% url 'cart_add' el.id %}" class="btn-buy">Купити</a>
                             </div>
 
                     </div>

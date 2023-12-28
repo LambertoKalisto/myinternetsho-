@@ -13,3 +13,16 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товари'
+
+class Cart(models.Model):
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=0)
+
+    def sum(self):
+        return self.product.price * self.quantity
+
+class Order(models.Model):
+    Name = models.CharField("Ім'я", max_length=50)
+    SurName = models.CharField("Прізвише", max_length=50)
+    Adress = models.CharField("Адресса відправки", max_length=250)
+    PhoneNumber = models.IntegerField("Номер телефону", max_length=10)

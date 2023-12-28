@@ -123,7 +123,7 @@ main .features p {max-width: 400px; margin: 20px auto;}
     font-size: 24px;
 }
 
-form {
+.create {
     margin-left: 32%;
     width:500px;
     margin-top: 50px;
@@ -208,9 +208,117 @@ form {
     padding: 5px;
     width: 500px;
     border-radius: 8px;
+    height: 35px;
 }
 
 .search-button{
     margin-left: 10px;
     border-radius: 8px;
+    height: 35px;
 }
+
+.cart{
+    max-width: 800px;
+    height: 250px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: black;
+}
+
+.cart-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.cart-item-info {
+    flex: 1;
+    margin-left: 15px;
+    margin-left: 280px;
+    text-align: left;
+    padding: 10px 0;
+}
+
+.cart-item {
+    margin-top: -200px;
+    margin-left: 280px;
+    text-align: left;
+    padding: 10px 0;
+}
+
+.cart-item-price {
+    margin-top: 30px;
+    font-weight: bold;
+    color: #333;
+    margin-left: 280px;
+    text-align: left;
+    padding: 10px 0;
+}
+
+.cart-item-quantity {
+    font-size: 14px;
+    color: #666;
+    margin-left: 280px;
+    float: left;
+}
+
+.cart-img {
+    width: 280px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.cart img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.btn-dell {
+    text-align: left;
+    color: white;
+    text-decoration: none;
+
+}
+
+.div-dell {
+    padding: 5px;
+    background-color: red;
+    border: none;
+    border-radius: 6px;
+    margin-left: 280px;
+}
+
+.all-price{
+    width: 800px;
+    height: 50px;
+    margin: 20px auto;
+    background: white;
+    border-radius: 5px;
+}
+
+.all-btn{
+    color: white;
+    background: green;
+    text-decoration: none;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.all-sum{
+    font-weight: bold;
+    color: #333;
+    margin-left: 20px;
+    text-align: left;
+    padding: 10px 0;
+}
+
+.div-all-btn{
+    float: right;
+    margin-top: -30px;
+    margin-right: 20px;
+}
+

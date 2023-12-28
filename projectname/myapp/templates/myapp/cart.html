@@ -1,0 +1,34 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Кошик
+{% endblock %}
+
+{% block content %}
+{% if cart %}
+    <div class="features">
+        <h1 class="cart-header">Кошик</h1>
+        {% for el in cart %}
+            <div class="cart">
+                <div class="card-img">
+                    <img src="{{ el.product.image.url }}" alt="{{ el.product.title }">
+                </div>
+                <div class="cart-item">{{ el.product.title }}</div>
+                <div class="cart-item-info">{{ el.product.description }}</div>
+                <input class="cart-item-quantity" value="{{ el.quantity }}">
+                <div class="cart-item-price">{{ el.sum }} грн</div>
+                <div class="div-dell">
+                    <a class="btn-dell" href="{% url 'cart_remove' el.id %}" >Видалити</a>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="all-price">
+            <div class="all-sum">Уся сумма: {{ total_sum }} грн</div>
+            <div class="div-all-btn"><a href="#" class="all-btn"> Оформити покупку</a></div>
+        </div>
+    </div>
+{% else %}
+    <div class="features"><h4>Корзина пуста</h4></div>
+{% endif %}
+{% endblock %}

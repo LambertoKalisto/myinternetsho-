@@ -8,7 +8,7 @@
 {% block content %}
      <div class="features">
         <h1>Додати відгук</h1>
-        <form method="post">
+        <form class="create" method="post">
             {% csrf_token %}
             {{ form.name }}<br>
             {{ form.full_text }}<br>
