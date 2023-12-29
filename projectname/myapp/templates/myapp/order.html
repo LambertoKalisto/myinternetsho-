@@ -1,0 +1,21 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Оформлення Заказу
+{% endblock %}
+
+{% block content %}
+     <div class="features">
+        <h1>Оформлення заказу</h1>
+        <form class="create" method="post">
+            {% csrf_token %}
+            {{ form.Name }}<br>
+            {{ form.SurName }}<br>
+            {{ form.Adress }}<br>
+            {{ form.PhoneNumber }}<br>
+            <span>{{ error }}</span>
+            <button class="btn btn-success" type="submit">Додати заказ</button>
+        </form>
+    </div>
+{% endblock %}

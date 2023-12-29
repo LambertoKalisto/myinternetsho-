@@ -8,9 +8,10 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('about', views.about, name='about'),
     path('search/', Search.as_view(), name='search'),
-    path('cart/', views.cart, name='cart'),
+    path('cart', views.cart, name='cart'),
     path('/add/<int:product_id>', cart_add, name='cart_add'),
     path('/remove/<int:cart_id>', cart_remove, name='cart_remove'),
+    path('cart/order', views.order, name='order'),
 ]
 
 if settings.DEBUG:

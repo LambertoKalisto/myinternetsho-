@@ -25,7 +25,7 @@
         {% endfor %}
         <div class="all-price">
             <div class="all-sum">Уся сумма: {{ total_sum }} грн</div>
-            <div class="div-all-btn"><a href="#" class="all-btn"> Оформити покупку</a></div>
+            <div class="div-all-btn"><a href="{% url 'order' %}" class="all-btn"> Оформити покупку</a></div>
         </div>
     </div>
 {% else %}

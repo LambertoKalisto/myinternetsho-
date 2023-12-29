@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Product, Cart
+from .models import Product, Cart, Order
 from django.views.generic import ListView
 from django.db.models import Q
+from .forms import OrderForm
 
 def index(request):
     prod = Product.objects.order_by('-date')
@@ -52,5 +53,27 @@ def cart_remove(request, cart_id):
     cart.delete()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
+def order(request):
+    error = ''
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save()
+            products_data = request.POST.getlist('products')
+            for product_id in products_data:
+                cart_item = Cart(product_id=product_id)
+                cart_item.save()
+                order.cart_items.add(cart_item)
+            return render(request, 'myapp/order_success.html')
+        else:
+            print(form.errors)
+            error = 'Не вірно заповнено форму'
 
+    form = OrderForm()
+
+    data = {
+        'form': form,
+        'error': error,
+    }
+    return render(request, 'myapp/order.html', data)
 
