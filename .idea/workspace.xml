@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="093cf38e-f1a9-47d4-9eea-cbf14b82c4d3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/projectname/myapp/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/projectname/myapp/templates/myapp/order.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/projectname/myapp/templates/myapp/order_success.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/myapp/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projectname/myapp/templates/myapp/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/templates/myapp/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/myapp/static/myapp/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/static/myapp/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/myapp/templates/myapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/templates/myapp/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/myapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/myapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/views.py" afterDir="false" />
     </list>

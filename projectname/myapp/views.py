@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Product, Cart, Order
+from .models import Product, Cart, Order, Category
 from django.views.generic import ListView
 from django.db.models import Q
 from .forms import OrderForm
+from django.utils.text import slugify
 
 def index(request):
     prod = Product.objects.order_by('-date')
-    return render(request, 'myapp/index.html', {'prod': prod})
+    category = Category.objects.all()
+    return render(request, 'myapp/index.html', {'prod': prod, 'category': category})
 
 def about(request):
     return render(request, 'myapp/about.html')
@@ -16,7 +18,7 @@ class Search(ListView):
 
     template_name = 'myapp/index.html'
     context_object_name = 'prod'
-    paginate_by = 5
+    paginate_by = 8
 
     def get_queryset(self):
         search_query = self.request.GET.get('q', '').strip()
@@ -26,6 +28,26 @@ class Search(ListView):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q')
         return context
+
+class CategorySearch(ListView):
+
+    template_name = 'myapp/index.html'
+    context_object_name = 'prod'
+    paginate_by = 8
+
+    def get_queryset(self):
+        category_query = self.request.GET.get('category', '').strip()
+
+        queryset = Product.objects.filter(Q(category__title=category_query))
+
+        return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q', '')
+        context['category'] = self.request.GET.get('category', '')
+        return context
+
 
 def cart(request):
     cart = Cart.objects.all()

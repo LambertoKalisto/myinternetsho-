@@ -1,11 +1,22 @@
 from django.db import models
 
+class Category(models.Model):
+    title = models.CharField('Назва', max_length=50)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'Категорія'
+        verbose_name_plural = 'Категорії'
+
 class Product(models.Model):
     title = models.CharField('Назва', max_length=50)
     description = models.CharField('Опис товару', max_length=250)
     price = models.FloatField('Ціна')
     image = models.ImageField('Картинка', upload_to='images/')
     date = models.DateTimeField('Дата публікації')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.title

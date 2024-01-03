@@ -8,6 +8,20 @@
 {% block content %}
 <div class="features">
     <div class="search-container">
+        <form action="{% url 'category-search' %}" method="get">
+            <div class="categories">
+                <ul class="main-menu">
+                    <li class="dropdown">
+                        <a href="#">Категорії</a>
+                        <ul class="sub-menu">
+                            {% for el in category %}
+                                <li><a href="{% url 'category-search' %}?category={{ el.title }}">{{ el.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </form>
         <form action="{% url 'search' %}" method="get">
             <input type="search" class="search" name="q" placeholder="Пошук...">
             <button type="submit" class="search-button"><i class="fa-solid fa-magnifying-glass"></i> Пошук</button>

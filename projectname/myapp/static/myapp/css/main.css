@@ -322,3 +322,52 @@ main .features p {max-width: 400px; margin: 20px auto;}
     margin-right: 20px;
 }
 
+.categories {
+    font-family: Brush Script MT;
+    float: left;
+    margin-left: 20%;
+}
+
+.main-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-menu li {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+}
+
+.main-menu a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px;
+    display: block;
+}
+
+.dropdown:hover .sub-menu {
+    display: block;
+}
+
+.sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 4px 4px;
+    z-index: 1;
+}
+
+.sub-menu li {
+    display: block;
+    margin: 0;
+}
+
+.sub-menu a {
+    padding: 10px;
+    color: #333;
+}
