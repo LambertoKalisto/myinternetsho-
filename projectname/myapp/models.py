@@ -28,11 +28,12 @@ class Product(models.Model):
 class Cart(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def sum(self):
         return self.product.price * self.quantity
     def __str__(self):
-        return self.product.title
+        return f"{self.quantity} x {self.product.title}"
 
 class Order(models.Model):
     Name = models.CharField("Ім'я", max_length=50)

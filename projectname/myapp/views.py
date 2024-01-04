@@ -50,30 +50,50 @@ class CategorySearch(ListView):
 
 
 def cart(request):
-    cart = Cart.objects.all()
+    request.session.set_expiry(1800)
+
+    cart = request.session.get('cart', {})
+    total_price = 0
     total_sum = 0
-    total_quantity = 0
-    for el in cart:
-        total_sum += el.sum()
-    return render(request, 'myapp/cart.html', {'cart': cart, 'total_sum': total_sum})
+    for item in cart.values():
+        item['total_price'] = item['price'] * item['quantity']
+        total_price += item['total_price']
+    total_sum = sum(item['price'] * item['quantity'] for item in cart.values())
+    return render(request, 'myapp/cart.html', {'cart': cart, 'total_sum': total_sum, 'total_price': total_price})
 
 def cart_add(request, product_id):
     product = Product.objects.get(id=product_id)
-    cart = Cart.objects.filter(product=product)
 
-    if not cart.exists():
-        Cart.objects.create(product=product, quantity=1)
+    cart = request.session.get('cart', {})
+
+    if str(product_id) not in cart:
+        cart[product_id] = {
+            'title': product.title,
+            'price': product.price,
+            'quantity': 1,
+            'description': product.description,
+            'image': {
+                'url': product.image.url,
+            },
+        }
     else:
-        cart = cart.first()
-        cart.quantity += 1
-        cart.save()
+        cart[str(product_id)]['quantity'] += 1
+
+    request.session['cart'] = cart
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-def cart_remove(request, cart_id):
-    cart = Cart.objects.get(id=cart_id)
-    cart.delete()
+def cart_remove(request, product_id):
+    cart = request.session.get('cart', {})
+
+    str_product_id = str(product_id)
+
+    if str_product_id in cart:
+        del cart[str_product_id]
+        request.session['cart'] = cart
+
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 def order(request):
     error = ''
@@ -81,17 +101,28 @@ def order(request):
         form = OrderForm(request.POST)
         if form.is_valid():
             order = form.save()
-            products_data = request.POST.getlist('products')
-            for product_id in products_data:
-                cart_item = Cart(product_id=product_id)
-                cart_item.save()
+
+            cart = request.session.get('cart', {})
+
+            for item_data in cart.values():
+                product = Product.objects.get(
+                    title=item_data['title'])
+                cart_item = Cart.objects.create(
+                    product=product,
+                    price=item_data['price'],
+                    quantity=item_data['quantity'],
+                )
                 order.cart_items.add(cart_item)
+
+            request.session['cart'] = {}
+            request.session.modified = True
+
             return render(request, 'myapp/order_success.html')
         else:
             print(form.errors)
             error = 'Не вірно заповнено форму'
-
-    form = OrderForm()
+    else:
+        form = OrderForm()
 
     data = {
         'form': form,
