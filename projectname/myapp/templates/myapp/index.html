@@ -12,11 +12,21 @@
             <div class="categories">
                 <ul class="main-menu">
                     <li class="dropdown">
-                        <a href="#">Категорії</a>
+                        <a href="#"><i class="fa-solid fa-list"></i> Категорії</a>
                         <ul class="sub-menu">
-                            {% for el in category %}
-                                <li><a href="{% url 'category-search' %}?category={{ el.title }}">{{ el.title }}</a></li>
-                            {% endfor %}
+                            {% if all_categories %}
+                                {% for el in all_categories %}
+                                    <li>
+                                        <a href="{% url 'category-search' %}?category={{ el.title }}">{{ el.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                {% for el in category %}
+                                    <li>
+                                        <a href="{% url 'category-search' %}?category={{ el.title }}">{{ el.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
@@ -40,7 +50,6 @@
                                 <div class="card-price">{{ el.price }} грн</div>
                                 <a href="{% url 'cart_add' el.id %}" class="btn-buy">Купити</a>
                             </div>
-
                     </div>
                 {% endfor %}
             {% else %}

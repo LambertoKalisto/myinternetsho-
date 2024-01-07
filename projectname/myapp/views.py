@@ -46,6 +46,8 @@ class CategorySearch(ListView):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
         context['category'] = self.request.GET.get('category', '')
+        context['all_categories'] = Category.objects.all()
+
         return context
 
 
@@ -59,7 +61,7 @@ def cart(request):
         item['total_price'] = item['price'] * item['quantity']
         total_price += item['total_price']
     total_sum = sum(item['price'] * item['quantity'] for item in cart.values())
-    return render(request, 'myapp/cart.html', {'cart': cart, 'total_sum': total_sum, 'total_price': total_price})
+    return render(request, 'myapp/cart.html', {'cart': cart, 'total_sum': round(total_sum,2), 'total_price': total_price})
 
 def cart_add(request, product_id):
     product = Product.objects.get(id=product_id)
@@ -129,4 +131,7 @@ def order(request):
         'error': error,
     }
     return render(request, 'myapp/order.html', data)
+
+
+
 
