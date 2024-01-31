@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Product, Cart, Order, Category
 from django.views.generic import ListView
@@ -51,8 +51,33 @@ class CategorySearch(ListView):
         return context
 
 
+def update_cart(request, product_id, add=True):
+    product = get_object_or_404(Product, id=product_id)
+
+    cart = request.session.get('cart', {})
+    str_product_id = str(product_id)
+
+    if str_product_id not in cart:
+        cart[str_product_id] = {
+            'title': product.title,
+            'price': product.price,
+            'quantity': 1,
+            'description': product.description,
+            'image': {
+                'url': product.image.url,
+            },
+        }
+    else:
+        if add:
+            cart[str_product_id]['quantity'] += 1
+        else:
+            cart[str_product_id]['quantity'] -= 1
+            if cart[str_product_id]['quantity'] <= 0:
+                del cart[str_product_id]
+
+    request.session['cart'] = cart
+
 def cart(request):
-    request.session.set_expiry(1800)
 
     cart = request.session.get('cart', {})
     total_price = 0
@@ -64,35 +89,12 @@ def cart(request):
     return render(request, 'myapp/cart.html', {'cart': cart, 'total_sum': round(total_sum,2), 'total_price': total_price})
 
 def cart_add(request, product_id):
-    product = Product.objects.get(id=product_id)
-
-    cart = request.session.get('cart', {})
-
-    if str(product_id) not in cart:
-        cart[product_id] = {
-            'title': product.title,
-            'price': product.price,
-            'quantity': 1,
-            'description': product.description,
-            'image': {
-                'url': product.image.url,
-            },
-        }
-    else:
-        cart[str(product_id)]['quantity'] += 1
-
-    request.session['cart'] = cart
+    update_cart(request, product_id)
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 def cart_remove(request, product_id):
-    cart = request.session.get('cart', {})
-
-    str_product_id = str(product_id)
-
-    if str_product_id in cart:
-        del cart[str_product_id]
-        request.session['cart'] = cart
+    update_cart(request, product_id, add=False)
 
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
@@ -102,9 +104,11 @@ def order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = form.save()
+            order = form.save(commit=False)
 
             cart = request.session.get('cart', {})
+
+            order.save()
 
             for item_data in cart.values():
                 product = Product.objects.get(

@@ -9,24 +9,23 @@ class OrderForm(ModelForm):
 
     class Meta:
         model = Order
-        fields = ['Name', 'SurName', 'Adress', 'PhoneNumber', 'products']
+        fields = ['name', 'surname', 'adress', 'phonenumber', 'products']
 
         widgets = {
-            "Name": TextInput(attrs={
+            "name": TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': "Ім'я",
             }),
-            "SurName": TextInput(attrs={
+            "surname": TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': "Прізвище",
             }),
-            "Adress": TextInput(attrs={
+            "adress": TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': "Адресса",
             }),
-            "PhoneNumber": NumberInput(attrs={
+            "phonenumber": TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': "Номер телефону",
-                'oninput': "this.value = this.value.slice(0, 10)",
             }),
         }

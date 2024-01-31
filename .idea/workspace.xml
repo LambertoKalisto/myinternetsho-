@@ -7,8 +7,12 @@
     <list default="true" id="093cf38e-f1a9-47d4-9eea-cbf14b82c4d3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projectname/myapp/templates/myapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/templates/myapp/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/myapp/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/myapp/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/myapp/templates/myapp/order.html" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/templates/myapp/order.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projectname/myapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/myapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/news/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/news/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projectname/review/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/projectname/review/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

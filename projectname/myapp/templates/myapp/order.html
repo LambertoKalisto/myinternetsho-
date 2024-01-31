@@ -10,10 +10,10 @@
         <h1>Оформлення заказу</h1>
         <form class="create" method="post">
             {% csrf_token %}
-            {{ form.Name }}<br>
-            {{ form.SurName }}<br>
-            {{ form.Adress }}<br>
-            {{ form.PhoneNumber }}<br>
+            {{ form.name }}<br>
+            {{ form.surname }}<br>
+            {{ form.adress }}<br>
+            {{ form.phonenumber }}<br>
 
             {% for product_id, item in cart.items %}
                 <input type="hidden" name="products" value="{{ product_id }}">
