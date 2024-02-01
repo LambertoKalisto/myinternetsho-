@@ -22,10 +22,10 @@ class OrderForm(ModelForm):
             }),
             "adress": TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': "Адресса",
+                'placeholder': "Адресcа",
             }),
             "phonenumber": TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': "Номер телефону",
+                'placeholder': "+380...",
             }),
         }

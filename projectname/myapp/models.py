@@ -143,7 +143,6 @@ class Order(models.Model):
                 message="Номер телефону повинен бути валідним."
             ),
         ],
-        default=' '
     )
     cart_items = models.ManyToManyField(Cart)
 
