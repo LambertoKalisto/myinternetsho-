@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from django.db.models import Q
 from .forms import OrderForm
 from django.utils.text import slugify
+from .cart import CartSession
 
 # Визначаємо вид для головної сторінки
 def index(request):
@@ -66,51 +67,20 @@ def update_cart(request, product_id, add=True):
     product = get_object_or_404(Product, id=product_id)
 
     # Отримуємо кошик з сесії або ініціалізуємо новий пустий кошик
-    cart = request.session.get('cart', {})
-    str_product_id = str(product_id)
-
-    # Додаємо або оновлюємо елемент кошика
-    if str_product_id not in cart:
-        cart[str_product_id] = {
-            'title': product.title,
-            'price': product.price,
-            'quantity': 1,
-            'description': product.description,
-            'image': {
-                'url': product.image.url,
-            },
-        }
+    cart = CartSession(request)
+    if add:
+        cart.add(product)
     else:
-        if add:
-            cart[str_product_id]['quantity'] += 1
-        else:
-            cart[str_product_id]['quantity'] -= 1
-            # Видаляємо елемент кошика, якщо його кількість менше або дорівнює 0
-            if cart[str_product_id]['quantity'] <= 0:
-                del cart[str_product_id]
-
-    # Зберігаємо оновлений кошик у сесії
-    request.session['cart'] = cart
-
+        cart.remove(product)
 
 # Визначаємо вид для сторінки кошика
 def cart(request):
     # Отримуємо кошик з сесії
-    cart = request.session.get('cart', {})
-    total_price = 0
-    total_sum = 0
+    cart = CartSession(request)
 
-    # Обчислюємо загальну суму та вартість товарів у кошику
-    for item in cart.values():
-        item['total_price'] = item['price'] * item['quantity']
-        total_price += item['total_price']
 
-    # Альтернативний спосіб обчислення загальної вартості
-    total_sum = sum(item['price'] * item['quantity'] for item in cart.values())
-
-    # Відображаємо сторінку кошика з даними про товари та загальною вартістю
     return render(request, 'myapp/cart.html',
-                  {'cart': cart, 'total_sum': round(total_sum, 2), 'total_price': total_price})
+                  {'cart': cart, 'total_sum': len(cart), 'total_price': cart.get_total_price()})
 
 # Визначаємо вид для додавання товару до кошика
 def cart_add(request, product_id):
@@ -140,24 +110,22 @@ def order(request):
             order = form.save(commit=False)
 
             # Отримуємо кошик з сесії
-            cart = request.session.get('cart', {})
+            cart = CartSession(request)
 
             # Зберігаємо замовлення в базі даних
             order.save()
 
             # Додаємо товари з кошика до замовлення
-            for item_data in cart.values():
-                product = Product.objects.get(title=item_data['title'])
+            for item_data in cart:
                 cart_item = Cart.objects.create(
-                    product=product,
+                    product=item_data['product'],
                     price=item_data['price'],
                     quantity=item_data['quantity'],
+                    order=order,
                 )
-                order.cart_items.add(cart_item)
 
             # Очищаємо кошик у сесії
-            request.session['cart'] = {}
-            request.session.modified = True
+            cart.clear()
 
             # Відображаємо сторінку успішного замовлення
             return render(request, 'myapp/order_success.html')

@@ -9,22 +9,22 @@
 {% if cart %}
     <div class="features">
         <h1 class="cart-header">Кошик</h1>
-        {% for product_id, item in cart.items %}
+        {% for item in cart %}
             <div class="cart">
                 <div class="card-img">
-                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}">
                 </div>
-                <div class="cart-item">{{ item.title }}</div>
-                <div class="cart-item-info">{{ item.description }}</div>
+                <div class="cart-item">{{ item.product.title }}</div>
+                <div class="cart-item-info">{{ item.product.description }}</div>
                 <input class="cart-item-quantity" value="{{ item.quantity }}">
                 <div class="cart-item-price">{{ item.total_price }} грн</div>
                 <div class="div-dell">
-                    <a class="btn-dell" href="{% url 'cart_remove' product_id %}" >Видалити</a>
+                    <a class="btn-dell" href="{% url 'cart_remove' item.product.pk %}" >Видалити</a>
                 </div>
             </div>
         {% endfor %}
         <div class="all-price">
-            <div class="all-sum">Уся сумма: {{ total_sum }} грн</div>
+            <div class="all-sum">Уся сумма: {{ total_price }} грн</div>
             <div class="div-all-btn"><a href="{% url 'order' %}" class="all-btn"> Оформити покупку</a></div>
         </div>
     </div>

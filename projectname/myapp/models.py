@@ -83,42 +83,6 @@ class Product(models.Model):
         verbose_name: str = 'Товар'
         verbose_name_plural: str = 'Товари'
 
-class Cart(models.Model):
-    """
-    Модель кошика покупок.
-
-    Attributes:
-    - product (ForeignKey): Зовнішній ключ для зв'язку з товаром.
-    - quantity (PositiveSmallIntegerField): Кількість товару в кошику.
-    - price (DecimalField): Ціна за одиницю товару.
-
-    Methods:
-    - sum(): Обчислює суму для елементу кошика.
-
-    """
-
-    product: models.ForeignKey[Product] = models.ForeignKey(to=Product, on_delete=models.CASCADE)
-    quantity: models.PositiveSmallIntegerField = models.PositiveSmallIntegerField(default=0)
-    price: models.DecimalField = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def sum(self) -> float:
-        """
-        Обчислює суму для елементу кошика.
-
-        Returns:
-        - float: Сума для елементу кошика.
-        """
-        return float(self.product.price * self.quantity)
-
-    def __str__(self) -> str:
-        """
-        Повертає рядкове представлення об'єкту - рядок з кількість x назва товару.
-
-        Returns:
-        - str: Рядок вигляду "кількість x назва товару".
-        """
-        return f"{self.quantity} x {self.product.title}"
-
 class Order(models.Model):
     """
     Модель замовлення.
@@ -144,7 +108,6 @@ class Order(models.Model):
             ),
         ],
     )
-    cart_items = models.ManyToManyField(Cart)
 
     def __str__(self) -> str:
         """
@@ -154,6 +117,9 @@ class Order(models.Model):
         - str: Рядок - ім'я замовника.
         """
         return self.name
+
+    # def __iter__(self):
+
 
     class Meta:
         """
@@ -165,3 +131,41 @@ class Order(models.Model):
         """
         verbose_name: str = 'Замовлення'
         verbose_name_plural: str = 'Замовлення'
+
+class Cart(models.Model):
+    """
+    Модель кошика покупок.
+
+    Attributes:
+    - product (ForeignKey): Зовнішній ключ для зв'язку з товаром.
+    - quantity (PositiveSmallIntegerField): Кількість товару в кошику.
+    - price (DecimalField): Ціна за одиницю товару.
+
+    Methods:
+    - sum(): Обчислює суму для елементу кошика.
+
+    """
+
+    product: models.ForeignKey[Product] = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    quantity: models.PositiveSmallIntegerField = models.PositiveSmallIntegerField(default=0)
+    price: models.DecimalField = models.DecimalField(max_digits=10, decimal_places=2)
+    order: models.ForeignKey[Order] = models.ForeignKey(to=Order, on_delete=models.CASCADE, related_name='cart_items')
+
+    def sum(self) -> float:
+        """
+        Обчислює суму для елементу кошика.
+
+        Returns:
+        - float: Сума для елементу кошика.
+        """
+        return float(self.product.price * self.quantity)
+
+    def __str__(self) -> str:
+        """
+        Повертає рядкове представлення об'єкту - рядок з кількість x назва товару.
+
+        Returns:
+        - str: Рядок вигляду "кількість x назва товару".
+        """
+        return f"{self.quantity} x {self.product.title}"
+
