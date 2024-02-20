@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Articles
 
 def news_home(request):
-    # Отримання всіх статей, впорядкованих за датою
+    # Get all articles ordered by date
     news = Articles.objects.order_by('-date')
-    # Передача статей у шаблон для відображення на сторінці 'news_home'
+    # Passing articles to a template for display on the 'news_home' page
     return render(request, 'news/news_home.html', {'news': news})

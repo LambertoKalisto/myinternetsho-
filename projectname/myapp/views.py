@@ -7,115 +7,112 @@ from .forms import OrderForm
 from django.utils.text import slugify
 from .cart import CartSession
 
-# Визначаємо вид для головної сторінки
+# Define view for the main page
 def index(request):
-    # Отримуємо товари, впорядковані за датою
+    # Get products ordered by date
     prod = Product.objects.order_by('-date')
-    # Отримуємо всі категорії
+    # Get all categories
     category = Category.objects.all()
-    # Відображаємо головну сторінку з даними про товари та категорії
+    # Display the main page with product and category data
     return render(request, 'myapp/index.html', {'prod': prod, 'category': category})
 
-# Визначаємо вид для сторінки 'про нас'
+# Define view for the 'about us' page
 def about(request):
-    # Відображаємо сторінку 'про нас'
+    # Display the 'about us' page
     return render(request, 'myapp/about.html')
 
-# Визначаємо вид для пошуку продуктів
+# Define view for product search
 class Search(ListView):
     template_name = 'myapp/index.html'
     context_object_name = 'prod'
     paginate_by = 8
 
     def get_queryset(self):
-        # Отримуємо пошуковий запит з параметра 'q' у GET-запиті
+        # Get search query from 'q' parameter in GET request
         search_query = self.request.GET.get('q', '').strip()
-        # Фільтруємо товари за назвою, яка містить пошуковий запит
+        # Filter products by title containing search query
         return Product.objects.filter(Q(title__icontains=search_query))
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        # Отримуємо контекстні дані, додаємо пошуковий запит
+        # Get context data, add search query
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q')
         return context
 
-# Визначаємо вид для пошуку за категорією
+# Define view for category search
 class CategorySearch(ListView):
     template_name = 'myapp/index.html'
     context_object_name = 'prod'
     paginate_by = 8
 
     def get_queryset(self):
-        # Отримуємо запит за категорією з параметра 'category' у GET-запиті
+        # Get category query from 'category' parameter in GET request
         category_query = self.request.GET.get('category', '').strip()
-        # Фільтруємо товари за категорією
+        # Filter products by category
         queryset = Product.objects.filter(Q(category__title=category_query))
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        # Отримуємо контекстні дані, додаємо пошуковий запит та категорію
+        # Get context data, add search query and category
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
         context['category'] = self.request.GET.get('category', '')
         context['all_categories'] = Category.objects.all()
         return context
 
-
-# Визначаємо вид для оновлення кошика
+# Define view for updating the cart
 def update_cart(request, product_id, add=True):
-    # Отримуємо об'єкт продукту або видаємо 404, якщо продукт не знайдено
+    # Get product object or return 404 if product not found
     product = get_object_or_404(Product, id=product_id)
 
-    # Отримуємо кошик з сесії або ініціалізуємо новий пустий кошик
+    # Get cart from session or initialize a new empty cart
     cart = CartSession(request)
     if add:
         cart.add(product)
     else:
         cart.remove(product)
 
-# Визначаємо вид для сторінки кошика
+# Define view for the cart page
 def cart(request):
-    # Отримуємо кошик з сесії
+    # Get cart from session
     cart = CartSession(request)
-
 
     return render(request, 'myapp/cart.html',
                   {'cart': cart, 'total_sum': len(cart), 'total_price': cart.get_total_price()})
 
-# Визначаємо вид для додавання товару до кошика
+# Define view for adding a product to the cart
 def cart_add(request, product_id):
-    # Викликаємо функцію оновлення кошика для додавання товару
+    # Call update_cart function to add the product
     update_cart(request, product_id)
 
-    # Повертаємо користувача на попередню сторінку
+    # Redirect user to the previous page
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-# Визначаємо вид для видалення товару з кошика
+# Define view for removing a product from the cart
 def cart_remove(request, product_id):
-    # Викликаємо функцію оновлення кошика для видалення товару
+    # Call update_cart function to remove the product
     update_cart(request, product_id, add=False)
 
-    # Повертаємо користувача на попередню сторінку
+    # Redirect user to the previous page
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
-
-# Визначаємо вид для оформлення замовлення
+# Define view for placing an order
 def order(request):
     error = ''
     if request.method == 'POST':
-        # Отримуємо дані форми з POST-запиту
+        # Get form data from POST request
         form = OrderForm(request.POST)
         if form.is_valid():
-            # Зберігаємо дані замовлення, не зберігаючи його в базі даних
+            # Save order data without saving it to the database
             order = form.save(commit=False)
 
-            # Отримуємо кошик з сесії
+            # Get cart from session
             cart = CartSession(request)
 
-            # Зберігаємо замовлення в базі даних
+            # Save order to the database
             order.save()
 
-            # Додаємо товари з кошика до замовлення
+            # Add cart items to the order
             for item_data in cart:
                 cart_item = Cart.objects.create(
                     product=item_data['product'],
@@ -124,26 +121,22 @@ def order(request):
                     order=order,
                 )
 
-            # Очищаємо кошик у сесії
+            # Clear the cart in the session
             cart.clear()
 
-            # Відображаємо сторінку успішного замовлення
+            # Display the order success page
             return render(request, 'myapp/order_success.html')
         else:
-            # Виводимо помилки форми в консоль (для відладки)
+            # Print form errors to console (for debugging)
             print(form.errors)
             error = 'Не вірно заповнено форму'
     else:
-        # Ініціалізуємо форму для GET-запитів
+        # Initialize form for GET requests
         form = OrderForm()
 
-    # Передаємо дані форми та помилку на сторінку замовлення
+    # Pass form data and error to the order page
     data = {
         'form': form,
         'error': error,
     }
     return render(request, 'myapp/order.html', data)
-
-
-
-

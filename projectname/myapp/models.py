@@ -4,11 +4,11 @@ from django.utils.text import slugify
 
 class Category(models.Model):
     """
-    Модель категорії для товарів.
+    Model categories for products.
 
     Attributes:
-    - title (CharField): Назва категорії.
-    - slug (SlugField): Слаг, унікальний ідентифікатор категорії.
+    - title (CharField): Category name.
+    - slug (SlugField): Slug, a unique category identifier.
     """
 
     title: models.CharField = models.CharField('Назва', max_length=50)
@@ -16,8 +16,8 @@ class Category(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Перевіряє, чи встановлено поле 'slug'. Якщо ні, генерує його на основі 'title'.
-        Викликає базовий метод збереження.
+        Checks whether the 'slug' field is inserted. However, it generates it based on 'title'.
+        Viklika is a basic saving method.
         """
         if not self.slug:
             self.slug = slugify(self.title)
@@ -25,35 +25,35 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         """
-        Повертає рядкове представлення об'єкту - назва категорії.
+        Turns the row of representations of the object - the name of the category.
 
         Returns:
-        - str: Рядок - назва категорії.
+        - str: Row - category name.
         """
         return self.title
 
     class Meta:
         """
-        Клас метаданих моделі Category.
+        Model metadata class Category.
 
         Attributes:
-        - verbose_name (str): Описова назва одного об'єкту моделі.
-        - verbose_name_plural (str): Описова назва багатьох об'єктів моделі.
+        - verbose_name (str): Describes the name of one model object.
+        - verbose_name_plural (str): Descriptive names of many objects in the model.
         """
         verbose_name: str = 'Категорія'
         verbose_name_plural: str = 'Категорії'
 
 class Product(models.Model):
     """
-    Модель товару.
+    Product model.
 
     Attributes:
-    - title (CharField): Назва товару.
-    - description (CharField): Опис товару.
-    - price (FloatField): Ціна товару.
-    - image (ImageField): Зображення товару.
-    - date (DateTimeField): Дата публікації товару.
-    - category (ForeignKey): Зовнішній ключ для зв'язку з категорією.
+    - title (CharField): The name of the product.
+    - description (CharField): Description of the product.
+    - price (FloatField): Product price.
+    - image (ImageField): Image of the product.
+    - date (DateTimeField): Date of publication of the product.
+    - category (ForeignKey): Foreign key for linking with the category.
     """
 
     title: models.CharField = models.CharField('Назва', max_length=50)
@@ -65,34 +65,33 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         """
-        Повертає рядкове представлення об'єкту - назва товару.
+        Turns around the presentation of the object - the name of the product.
 
         Returns:
-        - str: Рядок - назва товару.
+        - str: Row - the name of the product.
         """
         return self.title
 
     class Meta:
         """
-        Клас метаданих моделі Product.
+        Product model metadata class.
 
         Attributes:
-        - verbose_name (str): Описова назва одного об'єкту моделі.
-        - verbose_name_plural (str): Описова назва багатьох об'єктів моделі.
+        - verbose_name (str): Describes the name of one model object.
+        - verbose_name_plural (str): Descriptive names of many objects in the model.
         """
         verbose_name: str = 'Товар'
         verbose_name_plural: str = 'Товари'
 
 class Order(models.Model):
     """
-    Модель замовлення.
+    The contract model.
 
     Attributes:
-    - name (CharField): Ім'я замовника.
-    - surname (CharField): Прізвище замовника.
-    - shipping_address (CharField): Адреса доставки.
-    - phone_number (CharField): Номер телефону замовника.
-    - cart_items (ManyToManyField): Зв'язок з елементами кошика.
+    - name (CharField): Name of the deputy.
+    - surname (CharField): Nickname of the deputy.
+    - shipping_address (CharField): Shipping addresses.
+    - phone_number (CharField): Phone number of the deputy.
 
     """
 
@@ -111,10 +110,10 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         """
-        Повертає рядкове представлення об'єкту - ім'я замовника.
+        Turns the row of representations to the object - the name of the deputy.
 
         Returns:
-        - str: Рядок - ім'я замовника.
+        - str: Row - name of the deputy.
         """
         return self.name
 
@@ -123,26 +122,27 @@ class Order(models.Model):
 
     class Meta:
         """
-        Клас метаданих моделі Order.
+        Metadata class of the Order model.
 
         Attributes:
-        - verbose_name (str): Описова назва одного об'єкту моделі.
-        - verbose_name_plural (str): Описова назва багатьох об'єктів моделі.
+        - verbose_name (str): Describes the name of one model object.
+        - verbose_name_plural (str): Descriptive names of many objects in the model.
         """
         verbose_name: str = 'Замовлення'
         verbose_name_plural: str = 'Замовлення'
 
 class Cart(models.Model):
     """
-    Модель кошика покупок.
+    Shopping cart model.
 
     Attributes:
-    - product (ForeignKey): Зовнішній ключ для зв'язку з товаром.
-    - quantity (PositiveSmallIntegerField): Кількість товару в кошику.
-    - price (DecimalField): Ціна за одиницю товару.
+    - product (ForeignKey): Foreign key for linking with the product.
+    - quantity (PositiveSmallIntegerField): Quantity of product in a box.
+    - price (DecimalField): Price per item.
+    - order (ForeignKey): Foreign key for linking with the Order.
 
     Methods:
-    - sum(): Обчислює суму для елементу кошика.
+    - sum(): Calculate the sum for the cat element.
 
     """
 
@@ -153,19 +153,19 @@ class Cart(models.Model):
 
     def sum(self) -> float:
         """
-        Обчислює суму для елементу кошика.
+        Calculate the amount for the cat element.
 
         Returns:
-        - float: Сума для елементу кошика.
+        - float: Sum for the cat element.
         """
         return float(self.product.price * self.quantity)
 
     def __str__(self) -> str:
         """
-        Повертає рядкове представлення об'єкту - рядок з кількість x назва товару.
+        Turns the row presented to the object - row with quantity x name of the product.
 
         Returns:
-        - str: Рядок вигляду "кількість x назва товару".
+        - str: The row looks like “quantity x product name”.
         """
         return f"{self.quantity} x {self.product.title}"
 

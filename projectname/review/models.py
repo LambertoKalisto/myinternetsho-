@@ -3,13 +3,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Reviews(models.Model):
     """
-    Модель відгуку користувача.
+    User feedback model.
 
     Attributes:
-    - name (CharField): Ім'я користувача.
-    - full_text (TextField): Текст відгуку.
-    - rate (FloatField): Оцінка від 0 до 5.
-    - date (DateTimeField): Дата створення відгуку.
+    - name (CharField): Username.
+    - full_text (TextField): Feedback text.
+    - rate (FloatField): Rate from 0 to 5.
+    - date (DateTimeField): The date the review was created.
     """
     name = models.CharField('Імя користувача', max_length=50)
     full_text = models.TextField('Відгук')
@@ -21,20 +21,20 @@ class Reviews(models.Model):
 
     def __str__(self):
         """
-        Повертає рядкове представлення об'єкту - ім'я користувача.
+        Returns a string representation of the username object.
 
         Returns:
-        - str: Рядок - ім'я користувача.
+        - str: String - username.
         """
         return self.name
 
     class Meta:
         """
-        Клас метаданих моделі Reviews.
+        Metadata class of the Reviews model.
 
         Attributes:
-        - verbose_name (str): Описова назва одного об'єкту моделі.
-        - verbose_name_plural (str): Описова назва багатьох об'єктів моделі.
+        - verbose_name (str): Descriptive name of one model object.
+        - verbose_name_plural (str): Descriptive name of many model objects.
         """
         verbose_name = 'Відгук'
         verbose_name_plural = 'Відгуки'

@@ -2,13 +2,13 @@ from django.db import models
 
 class Articles(models.Model):
     """
-    Модель представляє статті на сайті.
+    The model presents statistics on the website.
 
     Attributes:
-    - title (CharField): Назва статті.
-    - anons (CharField): Анонс статті.
-    - full_text (TextField): Повний текст статті.
-    - date (DateTimeField): Дата публікації статті.
+    - title (CharField): Title of the article.
+    - anons (CharField): Announcement of statistics.
+    - full_text (TextField): Full text of the article.
+    - date (DateTimeField): Date of publication of the article.
     """
     title = models.CharField('Название', max_length=50)
     anons = models.CharField('Анонс', max_length=250)
@@ -17,20 +17,20 @@ class Articles(models.Model):
 
     def __str__(self) -> str:
         """
-        Повертає рядкове представлення об'єкту - назва новини.
+        Turns around the presentation of the object - the name of the novelty.
 
         Returns:
-        - str: Рядок - назва новини.
+        - str: Row - the name of the novelty.
         """
         return self.title
 
     class Meta:
         """
-        Метаклас для конфігурації моделі Articles.
+        Metaclass for configuration of the Articles model.
 
         Attributes:
-        - verbose_name (str): Описова назва одного об'єкту моделі.
-        - verbose_name_plural (str): Описова назва багатьох об'єктів моделі.
+        - verbose_name (str): Describes the name of one model object.
+        - verbose_name_plural (str): Descriptive names of many objects in the model.
         """
         verbose_name = 'Новость'
         verbose_name_plural = 'Новости'

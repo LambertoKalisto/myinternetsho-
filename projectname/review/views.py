@@ -5,31 +5,31 @@ from django.db.models import Avg, F
 
 
 def review(request):
-    # Отримання трьох останніх відгуків, впорядкованих за датою
+    # Getting the three latest reviews, ordered by date
     reviews = Reviews.objects.order_by('-date')[:3]
 
-    # Отримання середнього значення рейтингу відгуків
+    # Getting the average rating of reviews
     result = Reviews.objects.aggregate(середне=Avg('rate'))
     avg = result.get('середне', 0)
 
-    # Передача відгуків та середнього рейтингу у шаблон для відображення на сторінці 'reviews.html'
+    # Passing reviews and average rating to the template for display on the 'reviews.html' page
     return render(request, 'review/reviews.html', {'reviews': reviews, 'avg': round(avg, 1)})
 
 def create(request):
     error = ''
     if request.method == 'POST':
-        # Створення форми для введення нового відгуку
+        # Creating a form for entering a new review
         form = ReviewsForm(request.POST)
         if form.is_valid():
-            # Збереження нового відгуку в базі даних
+            # Saving the new review to the database
             form.save()
-            # Перенаправлення користувача на домашню сторінку після успішного створення відгуку
+            # Redirecting the user to the home page after successfully creating the review
             return redirect('home')
         else:
-            # Обробка випадку, коли форма заповнена невірно
+            # Handling the case where the form is filled incorrectly
             error = 'Не вірно заповнено форму'
 
-    # Ініціалізація порожньої форми для введення нового відгуку
+    # Initializing an empty form for entering a new review
     form = ReviewsForm()
 
     data = {
@@ -37,5 +37,5 @@ def create(request):
         'error': error,
     }
 
-    # Передача форми та помилки у шаблон для відображення на сторінці 'create.html'
+    # Passing the form and error to the template for display on the 'create.html' page
     return render(request, 'review/create.html', data)
