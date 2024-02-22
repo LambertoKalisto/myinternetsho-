@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
 # Ignore local settings
-D:/python/djangodz/projectname/projectname/settings_local.py
+projectname/projectname/settings_local.py
 
 ### Django ###
 *.log
