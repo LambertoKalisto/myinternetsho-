@@ -21,9 +21,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING
-SECRET_KEY = 'django-insecure-_p8q@t18f&om4tg%ulkykg1@s^r50j1#7*zh(ehin!#+iz(ztn'
-DEBUG = True
-ALLOWED_HOSTS = []
+
+try:
+    from .settings_local import SECRET_KEY
+except ImportError:
+    SECRET_KEY = '0_0'
+
+DEBUG = False
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
